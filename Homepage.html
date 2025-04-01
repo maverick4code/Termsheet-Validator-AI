@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barclays Internal System - Login</title>
+  <style>
+    /* Basic reset for margins and paddings */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* Overall body styling */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e2e8f0, #f7fafc);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    /* Container for the login form */
+    .login-container {
+      background-color: #fff;
+      width: 400px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    /* Logo styling */
+    .logo {
+      width: 150px;
+      margin-bottom: 20px;
+    }
+    /* Welcome header */
+    .login-container h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .login-container p.intro {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+    /* Form input groups styling */
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .input-group label {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: border 0.3s;
+    }
+    .input-group input:focus {
+      border-color: #0077b6;
+      outline: none;
+    }
+    /* Login button styling */
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #0077b6;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .login-btn:hover {
+      background-color: #005f99;
+    }
+    /* Forgot password link styling */
+    .forgot-password {
+      display: block;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #0077b6;
+      text-decoration: none;
+    }
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+    /* Security note styling */
+    .security-note {
+      font-size: 12px;
+      color: #777;
+      margin-top: 20px;
+    }
+    /* Responsive text centering for small screens */
+    @media (max-width: 480px) {
+      .login-container {
+        width: 90%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <!-- Logo area: replace 'logo-placeholder.png' with your actual logo path -->
+    <img src="Barclays_logo.png" alt="Company Logo" class="logo">
+    <!-- Welcome message -->
+    <h2>Welcome to TermSheet AI validator</h2>
+    <p class="intro">Please sign in using your Barclays email to access your dashboard.</p>
+    
+    <!-- Login Form -->
+    <form id="loginForm" onsubmit="return validateEmail();">
+      <!-- Email Input -->
+      <div class="input-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="your.name@barclays.com" required>
+      </div>
+      <!-- Password Input -->
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+      <!-- Login Button -->
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+    
+    <!-- Forgot Password Link -->
+    <a href="#" class="forgot-password">Forgot Password?</a>
+    
+    <!-- Security Note with padlock icon using Unicode character -->
+    <p class="security-note">
+      <span style="font-size: 18px;">&#128274;</span> Your credentials are securely encrypted. Do not share your login details.
+    </p>
+  </div>
+  
+  <!-- JavaScript for email domain validation -->
+  <script>
+    function validateEmail() {
+      const emailInput = document.getElementById('email');
+      const email = emailInput.value.trim();
+      const requiredDomain = '@barclays.com';
+      if (!email.endsWith(requiredDomain)) {
+        alert('Please use a Barclays email (ending with @barclays.com) to log in.');
+        emailInput.focus();
+        return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>

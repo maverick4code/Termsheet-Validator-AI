@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TermSheet AI Validator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+        .container { display: flex; height: 100vh; }
+        .header { background: #fff; padding: 10px 20px; border-bottom: 1px solid #ddd; position: fixed; width: 100%; top: 0; z-index: 10; }
+        .sidebar { width: 20%; background: #fff; border-right: 1px solid #ddd; padding: 20px; position: fixed; height: 100%; top: 60px; }
+        .main-content { width: 80%; margin-left: 20%; padding: 20px; margin-top: 80px; overflow-y: auto; } /* Increased margin-top */
+        .nav-item { padding: 10px; cursor: pointer; color: #333; font-size: 14px; font-weight: bold; }
+        .nav-item:hover { background: #ddd; }
+        .nav-item.active { color: #007BFF; }
+        .card { padding: 15px; margin: 10px; border-radius: 5px; color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .notifications { border: 1px solid #ddd; padding: 10px; background: #fff; max-height: 300px; overflow-y: auto; }
+        .alert { padding: 5px; font-size: 14px; }
+        .chart-container { background: #fff; padding: 20px; margin-top: 40px; border: 1px solid #ddd; } /* Increased margin-top */
+        .button { padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
+        .section { display: none; padding: 20px; background: #fff; border: 1px solid #ddd; margin-top: 40px; } /* Increased margin-top */
+        .section.active { display: block; }
+        .split-panel { display: flex; width: 100%; }
+        .left-panel, .right-panel { width: 50%; padding: 10px; }
+        .field { margin: 10px 0; font-size: 14px; }
+        .editable:hover .edit-icon { visibility: visible; }
+        .edit-icon { visibility: hidden; margin-left: 10px; cursor: pointer; }
+        .edit-mode input, .edit-mode textarea { width: 80%; padding: 5px; font-size: 14px; }
+        .diagram-placeholder { width: 300px; height: 200px; background: #eee; text-align: center; line-height: 200px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <span style="font-size: 18px; font-weight: bold; color: #007BFF; cursor: pointer;" onclick="showSection('dashboard')">TermSheet AI Validator</span>
+        <div style="float: right;">
+            <span style="font-size: 14px; color: #666;">Logged in as: Jane Doe | Role: Analyst</span><br>
+            <span style="font-size: 12px; color: #999;">April 1, 2025</span>
+            <button class="button" style="margin-left: 20px; border: 1px solid #DC3545; color: #DC3545;" onmouseover="this.style.background='#DC3545'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#DC3545';">Log Out</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="nav-item active" onclick="showSection('dashboard')"><span style="margin-right: 10px;"></span>Dashboard</div>
+            <div class="nav-item" onclick="showSection('upload-documents')"><span style="margin-right: 10px;"></span>Upload Documents</div>
+            <div class="nav-item" onclick="showSection('validation-reports')"><span style="margin-right: 10px;"></span>Validation Reports</div>
+            <div class="nav-item" onclick="showSection('error-logs')"><span style="margin-right: 10px;"></span>Error Logs</div>
+            <div class="nav-item" onclick="showSection('manual-corrections')"><span style="margin-right: 10px;"></span>Manual Corrections</div>
+            <div class="nav-item" onclick="showSection('analytics')"><span style="margin-right: 10px;"></span>Analytics</div>
+            <div class="nav-item" onclick="showSection('settings')"><span style="margin-right: 10px;"></span>Settings</div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="section active">
+                <div style="margin-bottom: 20px;">
+                    <input type="text" placeholder="Search by Term Sheet ID, Company, Date" style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ddd; border-radius: 5px; background: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' fill=\'grey\'><path d=\'M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z\'/></svg>') no-repeat 10px center; padding-left: 35px;">
+                    <button class="button" style="margin-top: 10px; background: #007BFF; color: white;">Search</button>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <button class="button" style="background: #007BFF; color: white; margin-right: 10px;">All</button>
+                    <button class="button" style="background: #FFC107; color: white; margin-right: 10px;">Pending</button>
+                    <button class="button" style="background: #28A745; color: white; margin-right: 10px;">Validated</button>
+                    <button class="button" style="background: #DC3545; color: white; margin-right: 10px;">Flagged</button>
+                    <button class="button" style="background: #6C757D; color: white;">Rejected</button>
+                </div>
+
+                <div style="display: flex; justify-content: space-between;">
+                    <div class="card" style="background: #007BFF; width: 30%;">
+                        <div style="font-size: 16px; font-weight: bold;">Processed Today: 50</div>
+                        <div style="font-size: 12px;">Total This Week: 245</div>
+                    </div>
+                    <div class="card" style="background: #DC3545; width: 30%;">
+                        <div style="font-size: 16px; font-weight: bold;">Errors Flagged: 5</div>
+                        <div style="font-size: 12px;">Pending Review: 3</div>
+                    </div>
+                    <div class="card" style="background: #28A745; width: 30%;">
+                        <div style="font-size: 16px; font-weight: bold;">Avg. Time: 2 min/sheet</div>
+                        <div style="font-size: 12px;">Fastest: 1.5 min</div>
+                    </div>
+                </div>
+
+                <div class="notifications">
+                    <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Recent Alerts</div>
+                    <div class="alert" style="color: #DC3545; background: #f8d7da;">5 term sheets with mismatched trade amounts - 10:15 AM</div>
+                    <div class="alert" style="color: #FFC107; background: #fff3cd;">Trade ID TS002: Missing closing date - 10:16 AM</div>
+                    <div class="alert" style="color: #28A745; background: #d4edda;">System processed 10 sheets in last hour - 10:17 AM</div>
+                    <button class="button" style="float: right; background: #6C757D; color: white;">Dismiss All</button>
+                </div>
+
+                <div class="chart-container">
+                    <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Error Rate Trend</div>
+                    <div style="margin-bottom: 10px;">
+                        <button class="button" style="background: #007BFF; color: white; margin-right: 10px;">Errors</button>
+                        <button class="button" style="background: #007BFF; color: white; margin-right: 10px;">Processing Time</button>
+                        <button class="button" style="background: #007BFF; color: white;">Volume</button>
+                    </div>
+                    <canvas id="errorChart" style="height: 400px;"></canvas>
+                </div>
+            </div>
+
+            <!-- Upload Documents Section -->
+            <div id="upload-documents" class="section">
+                <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Upload Term Sheets</div>
+                <div style="border: 2px dashed #6C757D; width: 300px; height: 150px; text-align: center; line-height: 150px; margin-bottom: 10px;">Drag & Drop or Click to Upload</div>
+                <input type="file" id="file-upload" style="display: none;" onchange="showFileName()">
+                <button class="button" style="background: #007BFF; color: white; margin-bottom: 10px;" onclick="document.getElementById('file-upload').click();">Upload File</button>
+                <div id="file-name" style="font-size: 14px; margin-bottom: 10px;"></div>
+                <select id="doc-type" style="width: 200px; padding: 10px; font-size: 14px; border: 1px solid #ddd; margin-bottom: 10px;" onchange="toggleSubmitButton()">
+                    <option value="">Select Type</option>
+                    <option value="pdf">PDF</option>
+                    <option value="word">Word</option>
+                    <option value="html">HTML</option>
+                    <option value="excel">Excel</option>
+                </select>
+                <input type="text" placeholder="Enter Batch ID (e.g., B001)" style="width: 200px; padding: 10px; font-size: 14px; border: 1px solid #ddd; margin-bottom: 10px;">
+                <button id="upload-submit" class="button" style="background: #007BFF; color: white;" disabled>Submit</button>
+                <div id="progress-bar" style="display: none; width: 200px; height: 20px; background: #28A745; color: white; text-align: center; line-height: 20px; margin-top: 10px;">Uploading: 0%</div>
+            </div>
+
+            <!-- Validation Reports Section -->
+            <div id="validation-reports" class="section">
+                <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Validation Reports</div>
+                <div style="margin-bottom: 10px;">
+                    <input type="date" style="padding: 5px; margin-right: 10px;"> - <input type="date" style="padding: 5px; margin-right: 10px;">
+                    <select style="padding: 5px;">
+                        <option>All</option>
+                        <option>Pass</option>
+                        <option>Fail</option>
+                    </select>
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="background: #ddd;">
+                        <th style="padding: 10px;">Trade ID</th>
+                        <th>Company</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Parameters Checked</th>
+                        <th>Pass/Fail %</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px;">TS001</td>
+                        <td>TechStartup</td>
+                        <td>2025-04-01</td>
+                        <td style="color: #DC3545;">Flagged</td>
+                        <td>4/5</td>
+                        <td>80%</td>
+                    </tr>
+                </table>
+                <button class="button" style="background: #28A745; color: white; margin-top: 10px;">Download CSV</button>
+            </div>
+
+            <!-- Error Logs Section -->
+            <div id="error-logs" class="section">
+                <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Error Logs</div>
+                <div style="background: #DC3545; color: white; padding: 10px; margin-bottom: 10px;">Unresolved Errors: 2</div>
+                <div style="margin-bottom: 10px;">
+                    <input type="date" style="padding: 5px; margin-right: 10px;">
+                    <select style="padding: 5px;">
+                        <option>All</option>
+                        <option>Warning</option>
+                        <option>Error</option>
+                    </select>
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="background: #ddd;">
+                        <th style="padding: 10px;">Trade ID</th>
+                        <th>Error Type</th>
+                        <th>Description</th>
+                        <th>Counterparty</th>
+                        <th>Timestamp</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr style="background: #f8d7da;">
+                        <td style="padding: 10px;">TS001</td>
+                        <td style="color: #DC3545;">Error</td>
+                        <td>Payment Totals 85%</td>
+                        <td>BuyerCorp Ltd.</td>
+                        <td>10:15 AM</td>
+                        <td><button class="button" style="background: #007BFF; color: white;">View</button></td>
+                    </tr>
+                    <tr style="background: #fff3cd;">
+                        <td style="padding: 10px;">TS002</td>
+                        <td style="color: #FFC107;">Warning</td>
+                        <td>Counterparty not found</td>
+                        <td>N/A</td>
+                        <td>10:16 AM</td>
+                        <td><button class="button" style="background: #007BFF; color: white;">View</button></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Manual Corrections (Detailed View) -->
+            <div id="manual-corrections" class="section">
+                <div style="font-size: 16px; font-weight: bold; color: #007BFF; margin-bottom: 20px;">Term Sheet Details: TS001 - TechStartup Inc.</div>
+                <div class="split-panel">
+                    <div class="left-panel">
+                        <div class="field"><strong>Trade ID:</strong> TS001</div>
+                        <div class="field"><strong>Company Name:</strong> TechStartup Inc.</div>
+                        <div class="field"><strong>Received Date:</strong> 2025-04-01</div>
+                        <div class="field editable" id="purchase-price"><strong>Purchase Price:</strong> <span>USD 150,000,000</span> <span class="edit-icon" onclick="editField('purchase-price')"></span></div>
+                        <div class="field editable" id="payment-terms"><strong>Payment Terms:</strong> <span>70% cash down, 15% earn-out (90% revenue, 18% EBITDA)</span> <span class="edit-icon" onclick="editField('payment-terms')">—</span></div>
+                        <div class="field editable" id="closing-date"><strong>Closing Date:</strong> <span>April 15, 2025</span> <span class="edit-icon" onclick="editField('closing-date')"></span></div>
+                        <div class="field editable" id="conditions"><strong>Conditions:</strong> <span>Non-compete for CEO, 60 days pre-closing</span> <span class="edit-icon" onclick="editField('conditions')"></span></div>
+                        <div class="field editable" id="counterparty"><strong>Counterparty:</strong> <span>BuyerCorp Ltd.</span> <span class="edit-icon" onclick="editField('counterparty')"></span></div>
+                        <div class="field"><strong>Document Type:</strong> PDF</div>
+                        <button class="button" style="background: #6C757D; color: white; margin-top: 10px;">View Original Document</button>
+                    </div>
+                    <div class="right-panel">
+                        <div style="font-size: 16px; font-weight: bold; color: #DC3545; margin-bottom: 10px;">Overall Status: Flagged</div>
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            <div style="margin: 5px 0;"><span style="color: #28A745;">✔️</span> Price > USD 100M: Pass</div>
+                            <div style="margin: 5px 0;"><span style="color: #28A745;">✔️</span> Closing within 45 days from Mar 1: Pass</div>
+                            <div style="margin: 5px 0;"><span style="color: #DC3545;">❌</span> Payment Totals 100%: Fail (85%)</div>
+                            <div style="margin: 5px 0;"><span style="color: #28A745;">✔️</span> Non-compete Compliance: Pass</div>
+                            <div style="margin: 5px 0;"><span style="color: #28A745;">✔️</span> Counterparty Valid: Pass</div>
+                        </div>
+                        <button class="button" style="background: #FFC107; color: white; float: right;">Correct & Resubmit</button>
+                        <button class="button" style="background: #FD7E14; color: white; margin-top: 10px; width: 100%;">Approve Anyway</button>
+                        <button class="button" style="background: #DC3545; color: white; margin-top: 10px; width: 100%;">Reject</button>
+                        <textarea placeholder="Add Note (e.g., Payment escalated to legal)" style="width: 100%; margin-top: 10px; padding: 10px; font-size: 14px; border: 1px solid #ddd;"></textarea>
+                        <button class="button" style="background: #6C757D; color: white; margin-top: 10px;">Add Note</button>
+                        <button class="button" style="background: #6F42C1; color: white; margin-top: 10px; width: 100%;">Escalate</button>
+                        <div style="margin-top: 20px; font-size: 12px; color: #666;">Actions Taken: Edited Payment at 10:20 AM</div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <button class="button" style="background: #007BFF; color: white; float: left;" onclick="showSection('dashboard')">Back to Dashboard</button>
+                    <button class="button" style="background: #6C757D; color: white; margin-left: 20px;">Download Report</button>
+                    <button class="button" style="background: #28A745; color: white; float: right;" disabled>Export to System</button>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics" class="section">
+                <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Analytics</div>
+                <div style="margin-bottom: 10px;">
+                    <select style="padding: 5px; margin-right: 10px;">
+                        <option>Day</option>
+                        <option>Week</option>
+                        <option>Month</option>
+                    </select>
+                    <select style="padding: 5px; margin-right: 10px;">
+                        <option>All</option>
+                        <option>Price</option>
+                        <option>Payment</option>
+                    </select>
+                    <button class="button" style="background: #007BFF; color: white; margin-right: 10px;" onclick="toggleDiagram('flow-chart')">Flow Chart</button>
+                    <button class="button" style="background: #007BFF; color: white;" onclick="toggleDiagram('pie-chart')">Pie Chart</button>
+                </div>
+                <div id="flow-chart" class="diagram-placeholder" style="display: none;">Sankey Diagram: Processed → Validated → Flagged</div>
+                <div id="pie-chart" class="diagram-placeholder" style="display: none;">Pie Chart: Price 98%, Payment 85%</div>
+                <button class="button" style="background: #28A745; color: white; margin-top: 10px;">Save as PNG</button>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="section">
+                <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Settings</div>
+                <div style="margin-bottom: 20px;">
+                    <strong>Validation Rules</strong>
+                    <ul>
+                        <li>Price > 100,000,000 <button class="button" style="font-size: 12px; margin-left: 10px;">Edit</button> <button class="button" style="font-size: 12px;">Delete</button></li>
+                    </ul>
+                    <div>
+                        <select style="padding: 5px; margin-right: 10px;">
+                            <option>Price</option>
+                            <option>Payment</option>
+                        </select>
+                        <select style="padding: 5px; margin-right: 10px;">
+                            <option>></option>
+                            <option><</option>
+                            <option>=</option>
+                        </select>
+                        <input type="text" placeholder="Value" style="padding: 5px; margin-right: 10px;">
+                        <select style="padding: 5px;">
+                            <option>Warning</option>
+                            <option>Error</option>
+                        </select>
+                        <button class="button" style="background: #007BFF; color: white; margin-left: 10px;">Add Rule</button>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <strong>User Preferences</strong><br>
+                    <label>Theme: <input type="checkbox" checked> Light</label><br>
+                    <label>Notifications: <input type="checkbox"> Email <input type="checkbox" checked> Screen</label><br>
+                    <select style="padding: 5px;">
+                        <option>English</option>
+                    </select>
+                </div>
+                <div>
+                    <strong>System Config</strong><br>
+                    <label>Max File Size: <input type="text" value="10MB" style="padding: 5px;"></label><br>
+                    <label>API Endpoint: <input type="text" value="[URL]" readonly style="padding: 5px;"></label><br>
+                    <label>Retention: <select style="padding: 5px;"><option>90 days</option></select></label>
+                </div>
+                <button class="button" style="background: #28A745; color: white; margin-top: 10px;">Apply Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show/hide sections without overlap
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent.includes(sectionId.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '))) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // Enable/disable Submit button in Upload Documents
+        function toggleSubmitButton() {
+            const docType = document.getElementById('doc-type').value;
+            const submitButton = document.getElementById('upload-submit');
+            submitButton.disabled = !docType;
+            if (!submitButton.disabled) {
+                submitButton.onclick = function() {
+                    const progressBar = document.getElementById('progress-bar');
+                    progressBar.style.display = 'block';
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += 20;
+                        progressBar.textContent = `Uploading: ${progress}%`;
+                        if (progress >= 100) {
+                            clearInterval(interval);
+                            progressBar.textContent = 'Upload Complete';
+                        }
+                    }, 500);
+                };
+            }
+        }
+
+        // Show uploaded file name
+        function showFileName() {
+            const fileInput = document.getElementById('file-upload');
+            const fileNameDiv = document.getElementById('file-name');
+            if (fileInput.files.length > 0) {
+                fileNameDiv.textContent = `Selected File: ${fileInput.files[0].name}`;
+            }
+        }
+
+        // Edit field functionality
+        function editField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const textSpan = field.querySelector('span:not(.edit-icon)');
+            const currentText = textSpan.textContent;
+            field.classList.add('edit-mode');
+            field.innerHTML = `<strong>${field.querySelector('strong').textContent}</strong> <input type="text" value="${currentText}"> <button class="button" style="background: #28A745; color: white;" onclick="saveField('${fieldId}')">Save</button> <button class="button" style="background: #6C757D; color: white;" onclick="cancelEdit('${fieldId}', '${currentText}')">Cancel</button>`;
+        }
+
+        function saveField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const newValue = field.querySelector('input').value;
+            field.classList.remove('edit-mode');
+            field.innerHTML = `<strong>${field.querySelector('strong').textContent}</strong> <span>${newValue}</span> <span class="edit-icon" onclick="editField('${fieldId}')">✏️</span>`;
+        }
+
+        function cancelEdit(fieldId, originalText) {
+            const field = document.getElementById(fieldId);
+            field.classList.remove('edit-mode');
+            field.innerHTML = `<strong>${field.querySelector('strong').textContent}</strong> <span>${originalText}</span> <span class="edit-icon" onclick="editField('${fieldId}')">✏️</span>`;
+        }
+
+        // Toggle Analytics Diagrams
+        function toggleDiagram(diagramId) {
+            const flowChart = document.getElementById('flow-chart');
+            const pieChart = document.getElementById('pie-chart');
+            if (diagramId === 'flow-chart') {
+                flowChart.style.display = 'block';
+                pieChart.style.display = 'none';
+            } else {
+                flowChart.style.display = 'none';
+                pieChart.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
