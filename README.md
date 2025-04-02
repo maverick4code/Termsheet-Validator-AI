@@ -29,7 +29,7 @@ The main content includes a full-width search bar with a magnifying glass icon, 
 The Upload Documents webpage allows file uploads with a drag-and-drop area (300x150px) and an "Upload File" button. Users select document type (PDF, Word, HTML, Excel) via a dropdown and optionally enter a batch ID. A progress bar simulates uploads, showing "Uploading: 60%." The layout is clean and centered, ensuring ease of use for Middle Office staff.
 
 
-## Error Logs Webpage Description
+## Error Logs Webpage 
 The Error Logs webpage lists errors in a table, color-coded along with trade ID, error type, description, counterparty, timestamp and a "View" button. A red warning banner shows unresolved errors (e.g. "2"), clickable for filtering, aiding quick error resolution.
 
 
