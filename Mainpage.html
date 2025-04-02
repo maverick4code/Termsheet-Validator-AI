@@ -5,43 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TermSheet AI Validator</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
-        .container { display: flex; height: 100vh; }
-        .header { background: #fff; padding: 10px 20px; border-bottom: 1px solid #ddd; position: fixed; width: 100%; top: 0; z-index: 10; }
-        .sidebar { width: 20%; background: #fff; border-right: 1px solid #ddd; padding: 20px; position: fixed; height: 100%; top: 60px; }
-        .main-content { width: 80%; margin-left: 20%; padding: 20px; margin-top: 80px; overflow-y: auto; } /* Increased margin-top */
-        .nav-item { padding: 10px; cursor: pointer; color: #333; font-size: 14px; font-weight: bold; }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #f4f4f4; 
+        }
+        .container { 
+            display: flex; 
+           height: 100vh; 
+        }
+        .header { 
+            background: #fff; 
+            padding: 10px 20px; 
+            border-bottom: 1px solid #ddd; 
+            position: fixed; 
+            width: 100%; 
+            top: 0; 
+            z-index: 10; 
+        }
+        .sidebar {
+            width: 20%; 
+            background: #fff; 
+            border-right: 1px solid #ddd; 
+            padding: 20px; 
+            position: fixed; 
+            height: 100%; 
+            top: 60px; 
+        }
+        .main-content { 
+            width: 80%; 
+            margin-left: 20%; 
+            padding: 20px; 
+            margin-top: 80px; 
+            overflow-y: auto; } /*Increase karo margin top */
+        .nav-item { 
+            padding: 10px; 
+            cursor: pointer; 
+            color: #333; 
+            font-size: 14px; 
+            font-weight: bold; 
+        }
         .nav-item:hover { background: #ddd; }
         .nav-item.active { color: #007BFF; }
-        .card { padding: 15px; margin: 10px; border-radius: 5px; color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .notifications { border: 1px solid #ddd; padding: 10px; background: #fff; max-height: 300px; overflow-y: auto; }
-        .alert { padding: 5px; font-size: 14px; }
-        .chart-container { background: #fff; padding: 20px; margin-top: 40px; border: 1px solid #ddd; } /* Increased margin-top */
-        .button { padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
-        .section { display: none; padding: 20px; background: #fff; border: 1px solid #ddd; margin-top: 40px; } /* Increased margin-top */
+        .card { padding: 15px; 
+               margin: 10px; 
+               border-radius: 5px; 
+               color: white; 
+               box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+              }
+        .notifications { 
+            border: 1px solid #ddd; 
+            padding: 10px; 
+            background: #fff; 
+            max-height: 300px; 
+            overflow-y: auto; 
+        }
+        .alert { 
+            padding: 5px; 
+            font-size: 14px; 
+        }
+        .chart-container { 
+            background: #fff; 
+            padding: 20px; 
+            margin-top: 40px; 
+            border: 1px solid #ddd; } 
+        .button { padding: 8px 15px; 
+                 border: none; 
+                 border-radius: 5px; 
+                 cursor: pointer; 
+                 font-size: 14px; 
+                }
+        .section { 
+            display: none; 
+            padding: 20px; 
+            background: #fff; 
+            border: 1px solid #ddd;
+            margin-top: 40px; 
+        } 
         .section.active { display: block; }
         .split-panel { display: flex; width: 100%; }
         .left-panel, .right-panel { width: 50%; padding: 10px; }
         .field { margin: 10px 0; font-size: 14px; }
         .editable:hover .edit-icon { visibility: visible; }
-        .edit-icon { visibility: hidden; margin-left: 10px; cursor: pointer; }
-        .edit-mode input, .edit-mode textarea { width: 80%; padding: 5px; font-size: 14px; }
-        .diagram-placeholder { width: 300px; height: 200px; background: #eee; text-align: center; line-height: 200px; margin-top: 10px; }
+        .edit-icon { 
+            visibility: hidden; 
+            margin-left: 10px; 
+            cursor: pointer; 
+        }
+        .edit-mode input, .edit-mode textarea { 
+            width: 80%; 
+            padding: 5px; 
+            font-size: 14px; 
+        }
+        .diagram-placeholder { 
+            width: 300px; 
+            height: 200px; 
+            background: #eee; 
+            text-align: center; 
+            line-height: 200px; 
+            margin-top: 10px; 
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <span style="font-size: 18px; font-weight: bold; color: #007BFF; cursor: pointer;" onclick="showSection('dashboard')">TermSheet AI Validator</span>
         <div style="float: right;">
             <span style="font-size: 14px; color: #666;">Logged in as: Jane Doe | Role: Analyst</span><br>
-            <span style="font-size: 12px; color: #999;">April 1, 2025</span>
-            <button class="button" style="margin-left: 20px; border: 1px solid #DC3545; color: #DC3545;" onmouseover="this.style.background='#DC3545'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#DC3545';">Log Out</button>
+            <span style="font-size: 12px; color: #999;">March 25, 2025</span>
+            <button class="button" style="margin-left: 20px; 
+                border: 1px solid #DC3545; 
+                color: #DC3545;" onmouseover="this.style.background='#DC3545'; 
+                this.style.color='white';" onmouseout="this.style.background='transparent'; 
+                this.style.color='#DC3545';">Log Out</button>
         </div>
     </div>
 
     <div class="container">
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="nav-item active" onclick="showSection('dashboard')"><span style="margin-right: 10px;"></span>Dashboard</div>
             <div class="nav-item" onclick="showSection('upload-documents')"><span style="margin-right: 10px;"></span>Upload Documents</div>
@@ -52,12 +133,12 @@
             <div class="nav-item" onclick="showSection('settings')"><span style="margin-right: 10px;"></span>Settings</div>
         </div>
 
-        <!-- Main Content -->
         <div class="main-content">
-            <!-- Dashboard Section -->
             <div id="dashboard" class="section active">
                 <div style="margin-bottom: 20px;">
-                    <input type="text" placeholder="Search by Term Sheet ID, Company, Date" style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ddd; border-radius: 5px; background: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' fill=\'grey\'><path d=\'M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z\'/></svg>') no-repeat 10px center; padding-left: 35px;">
+                    <input type="text" placeholder="Search by Term Sheet ID, Company, Date" style="width: 100%; 
+                        padding: 10px; font-size: 14px; border: 1px solid #ddd; border-radius: 5px; 
+                        background: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' fill=\'grey\'><path d=\'M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z\'/></svg>') no-repeat 10px center; padding-left: 35px;">
                     <button class="button" style="margin-top: 10px; background: #007BFF; color: white;">Search</button>
                 </div>
                 <div style="margin-bottom: 20px;">
@@ -85,9 +166,9 @@
 
                 <div class="notifications">
                     <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Recent Alerts</div>
-                    <div class="alert" style="color: #DC3545; background: #f8d7da;">5 term sheets with mismatched trade amounts - 10:15 AM</div>
-                    <div class="alert" style="color: #FFC107; background: #fff3cd;">Trade ID TS002: Missing closing date - 10:16 AM</div>
-                    <div class="alert" style="color: #28A745; background: #d4edda;">System processed 10 sheets in last hour - 10:17 AM</div>
+                    <div class="alert" style="color: #DC3545; background: #f8d7da;">5 term sheets with mismatched trade amounts -  10:15 AM</div>
+                    <div class="alert" style="color: #FFC107; background: #fff3cd;">Trade ID TS002: Missing closing date -  10:16 AM</div>
+                    <div class="alert" style="color: #28A745; background: #d4edda;">System processed 10 sheets in last hour -  10:17 AM</div>
                     <button class="button" style="float: right; background: #6C757D; color: white;">Dismiss All</button>
                 </div>
 
@@ -102,7 +183,6 @@
                 </div>
             </div>
 
-            <!-- Upload Documents Section -->
             <div id="upload-documents" class="section">
                 <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Upload Term Sheets</div>
                 <div style="border: 2px dashed #6C757D; width: 300px; height: 150px; text-align: center; line-height: 150px; margin-bottom: 10px;">Drag & Drop or Click to Upload</div>
@@ -114,14 +194,13 @@
                     <option value="pdf">PDF</option>
                     <option value="word">Word</option>
                     <option value="html">HTML</option>
-                    <option value="excel">Excel</option>
+                    <option value="excel">Excel</option>  <!-- Will add more later-->
                 </select>
-                <input type="text" placeholder="Enter Batch ID (e.g., B001)" style="width: 200px; padding: 10px; font-size: 14px; border: 1px solid #ddd; margin-bottom: 10px;">
+                <input type="text" placeholder="Enter Batch ID (e.g. B001)" style="width: 200px; padding: 10px; font-size: 14px; border: 1px solid #ddd; margin-bottom: 10px;">
                 <button id="upload-submit" class="button" style="background: #007BFF; color: white;" disabled>Submit</button>
                 <div id="progress-bar" style="display: none; width: 200px; height: 20px; background: #28A745; color: white; text-align: center; line-height: 20px; margin-top: 10px;">Uploading: 0%</div>
             </div>
 
-            <!-- Validation Reports Section -->
             <div id="validation-reports" class="section">
                 <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Validation Reports</div>
                 <div style="margin-bottom: 10px;">
@@ -153,7 +232,6 @@
                 <button class="button" style="background: #28A745; color: white; margin-top: 10px;">Download CSV</button>
             </div>
 
-            <!-- Error Logs Section -->
             <div id="error-logs" class="section">
                 <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Error Logs</div>
                 <div style="background: #DC3545; color: white; padding: 10px; margin-bottom: 10px;">Unresolved Errors: 2</div>
@@ -193,7 +271,7 @@
                 </table>
             </div>
 
-            <!-- Manual Corrections (Detailed View) -->
+            
             <div id="manual-corrections" class="section">
                 <div style="font-size: 16px; font-weight: bold; color: #007BFF; margin-bottom: 20px;">Term Sheet Details: TS001 - TechStartup Inc.</div>
                 <div class="split-panel">
@@ -234,7 +312,7 @@
                 </div>
             </div>
 
-            <!-- Analytics Section -->
+            
             <div id="analytics" class="section">
                 <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Analytics</div>
                 <div style="margin-bottom: 10px;">
@@ -256,7 +334,7 @@
                 <button class="button" style="background: #28A745; color: white; margin-top: 10px;">Save as PNG</button>
             </div>
 
-            <!-- Settings Section -->
+    
             <div id="settings" class="section">
                 <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Settings</div>
                 <div style="margin-bottom: 20px;">
@@ -302,7 +380,6 @@
     </div>
 
     <script>
-        // Show/hide sections without overlap
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
@@ -316,7 +393,6 @@
             });
         }
 
-        // Enable/disable Submit button in Upload Documents
         function toggleSubmitButton() {
             const docType = document.getElementById('doc-type').value;
             const submitButton = document.getElementById('upload-submit');
@@ -338,7 +414,7 @@
             }
         }
 
-        // Show uploaded file name
+        
         function showFileName() {
             const fileInput = document.getElementById('file-upload');
             const fileNameDiv = document.getElementById('file-name');
@@ -347,7 +423,6 @@
             }
         }
 
-        // Edit field functionality
         function editField(fieldId) {
             const field = document.getElementById(fieldId);
             const textSpan = field.querySelector('span:not(.edit-icon)');
@@ -369,7 +444,7 @@
             field.innerHTML = `<strong>${field.querySelector('strong').textContent}</strong> <span>${originalText}</span> <span class="edit-icon" onclick="editField('${fieldId}')">✏️</span>`;
         }
 
-        // Toggle Analytics Diagrams
+        
         function toggleDiagram(diagramId) {
             const flowChart = document.getElementById('flow-chart');
             const pieChart = document.getElementById('pie-chart');
