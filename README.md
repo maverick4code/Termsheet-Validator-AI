@@ -38,20 +38,25 @@ The Manual Corrections webpage displays a split panel: left shows editable field
 
 
 
+
+
 # Usage
 
 1) Navigate the Dashboard:
 - Click sidebar items (e.g., "Upload Documents") to switch sections.
 - Use the "Back to Dashboard" button in Manual Corrections to return to the main view.
 
+
 2) Upload Documents:
 - Click "Upload File" to select a file (displays filename).
 - Choose a document type and optionally enter a batch ID.
 - Click "Submit" to simulate an upload with a progress bar.
 
+
 3) Review and Edit Term Sheets:
 - In "Error Logs," click "View" to open Manual Corrections for a specific term sheet.
 - Edit fields (e.g., Payment Terms) by clicking the pencil icon, then save or cancel changes.
+
 
 4) Analytics:
 - Toggle between Flow Chart and Pie Chart placeholders to preview diagram types.
@@ -65,9 +70,11 @@ The Manual Corrections webpage displays a split panel: left shows editable field
 - CSS: Styles the interface with inline rules for layout, colors, and spacing.
 - JavaScript: Adds basic interactivity (section toggling, field editing, file upload simulation).
 
+
 2) Planned Backend Integration (In process, Not Included)
 - Python (Flask)
 - APIs
+
 
 3) Planned AI & Data Processing (In process, Not Included)
 - Tesseract
