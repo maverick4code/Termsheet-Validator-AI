@@ -37,3 +37,39 @@ The Error Logs webpage lists errors in a table, color-coded along with trade ID,
 The Manual Corrections webpage displays a split panel: left shows editable fields (Trade ID, Company Name,..) with pencil icons for edits; right shows validation status (e.g. "Flagged" in red) and checks (pass/fail). Action buttons (Correct & Resubmit, yellow; Approve Anyway, orange; Reject, red) allow decisions, with notes and escalation options. A history log tracks actions (e.g. "Edited Payment at 10:20 AM").
 
 
+
+# Usage
+
+1) Navigate the Dashboard:
+- Click sidebar items (e.g., "Upload Documents") to switch sections.
+- Use the "Back to Dashboard" button in Manual Corrections to return to the main view.
+
+2) Upload Documents:
+- Click "Upload File" to select a file (displays filename).
+- Choose a document type and optionally enter a batch ID.
+- Click "Submit" to simulate an upload with a progress bar.
+
+3) Review and Edit Term Sheets:
+- In "Error Logs," click "View" to open Manual Corrections for a specific term sheet.
+- Edit fields (e.g., Payment Terms) by clicking the pencil icon, then save or cancel changes.
+
+4) Analytics:
+- Toggle between Flow Chart and Pie Chart placeholders to preview diagram types.
+
+
+
+## Technologies Used
+
+1) Core Development & Logic
+- HTML: Structures the dashboard layout and content.
+- CSS: Styles the interface with inline rules for layout, colors, and spacing.
+- JavaScript: Adds basic interactivity (section toggling, field editing, file upload simulation).
+
+2) Planned Backend Integration (In process, Not Included)
+- Python (Flask)
+- APIs
+
+3) Planned AI & Data Processing (In process, Not Included)
+- Tesseract
+- spaCy
+- Scikit-learn
